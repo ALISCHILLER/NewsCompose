@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -49,6 +51,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+// Allow references to generated code
+    kapt {
+        correctErrorTypes = true
+    }
 
 }
 
@@ -70,18 +76,22 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    val nav_version = "2.7.4"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-//
-//
-//    //Hilt Dagger
-//    implementation("com.google.dagger:hilt-android:2.47")
-//    kapt("com.google.dagger:hilt-android-compiler:2.44")
-//
-//
-//    //Retrofit
-//    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-//    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // navigation
+    implementation("androidx.navigation:navigation-compose:2.7.4")
+
+    //Hilt Dagger
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    //Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 
 
 }

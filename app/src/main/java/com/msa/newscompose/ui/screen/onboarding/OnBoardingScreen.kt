@@ -1,7 +1,4 @@
-
-
 package com.msa.newscompose.ui.screen.onboarding
-
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,17 +20,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msa.newscompose.data.model.pagelist
+import com.msa.newscompose.ui.component.NewsButton
+import com.msa.newscompose.ui.component.NewsTextButton
 import com.msa.newscompose.ui.screen.onboarding.component.OnBoardingPage
 import com.msa.newscompose.ui.screen.onboarding.component.PageIndicator
 import com.msa.newscompose.util.Dimens.MediumPadding2
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(
+    event: (OnBoardingEvent) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -54,17 +58,59 @@ fun OnBoardingScreen() {
         HorizontalPager(state = pagerState) { index ->
             OnBoardingPage(page = pagelist[index])
         }
+
         Spacer(modifier = Modifier.weight(1f))
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MediumPadding2)
+                .navigationBarsPadding(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         )
         {
-             PageIndicator(modifier = Modifier.width(50.dp), pageSize = pagelist.size, selectedPage = pagerState.currentPage)
+            PageIndicator(
+                modifier = Modifier
+                    .width(50.dp),
+                pageSize = pagelist.size,
+                selectedPage = pagerState.currentPage
+            )
 
+
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val scope = rememberCoroutineScope()
+                if (buttonsState.value[0].isNotEmpty()) {
+                    NewsTextButton(
+                        text = buttonsState.value[0],
+                        onClick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(page = pagerState.currentPage - 1)
+                            }
+                        }
+                    )
+                }
+
+                NewsButton(
+                    text = buttonsState.value[1],
+                    onClick = {
+                        scope.launch {
+                            if (pagerState.currentPage == 2) {
+                               event(OnBoardingEvent.SaveAppEntry)
+                            } else {
+                                pagerState.animateScrollToPage(
+                                    page = pagerState.currentPage + 1
+                                )
+                            }
+                        }
+                    }
+                )
+
+            }
         }
-        
+
     }
 }
 
@@ -72,5 +118,5 @@ fun OnBoardingScreen() {
 @Composable
 @Preview
 fun OnBoardingScreenPreview() {
-    OnBoardingScreen()
+    OnBoardingScreen({})
 }
