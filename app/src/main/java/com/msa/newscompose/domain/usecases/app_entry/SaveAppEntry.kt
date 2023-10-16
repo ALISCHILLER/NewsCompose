@@ -1,4 +1,4 @@
-package com.msa.newscompose.domain.usecases
+package com.msa.newscompose.domain.usecases.app_entry
 
 import com.msa.newscompose.domain.manager.LocalUserManager
 

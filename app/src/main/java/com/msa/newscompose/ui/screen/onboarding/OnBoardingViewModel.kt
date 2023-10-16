@@ -2,7 +2,7 @@ package com.msa.newscompose.ui.screen.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msa.newscompose.domain.usecases.AppEntryUseCases
+import com.msa.newscompose.domain.usecases.app_entry.AppEntryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

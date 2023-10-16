@@ -1,5 +1,7 @@
 package com.msa.newscompose.data.remote
 
+import com.msa.newscompose.data.remote.dto.NewsResponse
+import com.msa.newscompose.util.Constants.API_KEY
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,6 +12,6 @@ interface NewsApi {
     suspend fun  getNews(
         @Query("page")page:Int,
         @Query("sources")sources:String,
-        @Query("apiKey")apiKey:String,
-    )
+        @Query("apiKey")apiKey:String= API_KEY,
+    ): NewsResponse
 }
